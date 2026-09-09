@@ -1,0 +1,24 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<div class="form-card">
+
+<form method="post">
+    {% csrf_token %}
+
+    <h2>Client</h2>
+    {{ client_form.as_p }}
+
+    <h2>Cantine</h2>
+    {{ cantine_form.as_p }}
+
+    <h2>Paiement</h2>
+    {{ paiement_form.as_p }}
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form method="post" class="form-card">
+        {% csrf_token %}
+
+        <div class="form-title">Modification du client</div>
+
+        <div class="form-section">
+            <h3>Client</h3>
+            {{ client_form.as_p }}
+        </div>
+
+        <div class="form-section">
+            <h3>Cantine</h3>
+            {{ cantine_form.as_p }}
+        </div>
+
+        <div class="form-section">
+            <h3>Paiement</h3>
+            {{ paiement_form.as_p }}
+        </div>
+
+        <button type="submit">Enregistrer les modifications</button>
+
+        <a href="{% url 'clients_list' %}" class="back-link">⬅ Retour</a>
+
+    </form>
+
+</div>
+
+{% endblock %}

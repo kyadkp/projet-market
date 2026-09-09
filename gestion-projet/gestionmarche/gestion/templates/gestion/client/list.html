@@ -1,0 +1,224 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<h1 style="margin-bottom:20px;">Gestion des Clients</h1>
+
+<!-- ➕ Ajouter -->
+<a href="{% url 'client_full_create' %}" class="btn-add">
+    Ajouter un client
+</a>
+
+<!-- 🔍 Recherche -->
+<div style="margin:15px 0;">
+    <input type="text" id="searchInput" name="q"
+           placeholder="Rechercher (nom, téléphone...)"
+           value="{{ query }}"
+           class="search-input">
+</div>
+
+<hr>
+
+<table id="table-results" class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Téléphone</th>
+            <th>Nb Cantines</th>
+            <th>Actions</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.cantine_set.first.matricule }}</td>
+            <td>{{ client.nom }}</td>
+            <td>{{ client.telephone }}</td>
+            <td>{{ client.cantine_set.count }}</td>
+
+            <!-- Actions -->
+            <td>
+                <a href="{% url 'client_update' client.id %}" class="btn-edit">Modifier</a>
+
+               <form action="{% url 'client_delete' client.id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="button" class="btn-delete" 
+            onclick="ouvrirModal('{{ client.nom }}', this.closest('form'))">
+        Supprimer
+    </button>
+</form>
+            </td>
+
+            <!-- Détail -->
+            <td>
+                <a href="{% url 'client_detail' client.id %}" class="btn-detail">
+                    Voir
+                </a>
+            </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">Aucun client trouvé</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- 🔥 RECHERCHE DYNAMIQUE -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let input = document.getElementById("searchInput");
+
+    input.addEventListener("input", function () {
+        let query = input.value;
+
+        fetch(`/clients/?q=${query}`)
+            .then(response => response.text())
+            .then(html => {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(html, 'text/html');
+
+                let newTable = doc.querySelector('#table-results');
+
+                if (newTable) {
+                    document.querySelector('#table-results').innerHTML = newTable.innerHTML;
+                }
+            });
+    });
+});
+</script>
+
+<!-- 🎨 STYLE SIMPLE PRO -->
+<style>
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.table th {
+    background-color: #f5f5f5;
+    text-align: left;
+}
+
+.table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.search-input {
+    width: 300px;
+    padding: 8px;
+}
+
+.btn-add {
+    background-color: #2ecc71;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+}
+
+.btn-edit {
+    background-color: #3498db;
+    color: white;
+    padding: 5px 8px;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+}
+
+.btn-detail {
+    background-color: #9b59b6;
+    color: white;
+    padding: 5px 8px;
+    text-decoration: none;
+}
+</style>
+<!-- MODALE DE CONFIRMATION -->
+<div id="modal-overlay" style="display:none;">
+    <div id="modal-box">
+        <p id="modal-message"></p>
+        <div class="modal-buttons">
+            <button id="btn-confirmer" class="btn-delete">Confirmer</button>
+            <button onclick="fermerModal()" class="btn-annuler">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<style>
+#modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal-box {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    min-width: 320px;
+}
+
+#modal-message {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-annuler {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+</style>
+
+<script>
+let formASupprimer = null;
+
+function ouvrirModal(nom, form) {
+    formASupprimer = form;
+    document.getElementById('modal-message').textContent = 
+        `Voulez-vous vraiment supprimer "${nom}" ? Cette action est irréversible.`;
+    document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function fermerModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    formASupprimer = null;
+}
+
+document.getElementById('btn-confirmer').addEventListener('click', function() {
+    if (formASupprimer) formASupprimer.submit();
+});
+</script>
+
+{% endblock %}

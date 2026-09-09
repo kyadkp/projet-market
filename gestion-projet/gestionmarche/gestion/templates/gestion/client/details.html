@@ -1,0 +1,67 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<div class="details-page">
+
+<h1>Détails du client</h1>
+
+<div class="client-box">
+    <p><strong>Nom :</strong> {{ client.nom }}</p>
+    <p><strong>Téléphone :</strong> {{ client.telephone }}</p>
+    <p><strong>Nombre de cantines :</strong> {{ cantines|length }}</p>
+</div>
+
+<h2>Cantines</h2>
+
+<div class="details-table-wrapper">
+
+<table class="details-table">
+
+    <thead>
+        <tr>
+            <th>Matricule</th>
+            <th>Superficie</th>
+            <th>Montant à payer</th>
+            <th>Montant payé</th>
+            <th>Reste</th>
+            <th>Date paiement</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for cantine in cantines %}
+        <tr>
+
+            <td>{{ cantine.matricule }}</td>
+            <td>{{ cantine.superficie }}</td>
+
+            <td>{{ cantine.total_du }}</td>
+            <td>{{ cantine.total_paye }}</td>
+            <td>{{ cantine.restant }}</td>
+
+            <td>
+                {% for p in cantine.paiement_set.all %}
+                    <span class="date-tag">
+                        {{ p.date_paiement|date:"d/m/Y" }}
+                    </span>
+                {% empty %}
+                    Aucun paiement
+                {% endfor %}
+            </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Aucune cantine</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

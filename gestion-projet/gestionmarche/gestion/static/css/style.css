@@ -1,0 +1,370 @@
+/* ===== RESET GLOBAL ===== */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== BACKGROUND GLOBAL ===== */
+body{
+    background: linear-gradient(135deg, #e6f2ff, #d9ecff);
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    max-width: 10000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* ===== TITRES ===== */
+h1, h2{
+    margin-bottom: 15px;
+    color: #1f3b57;
+}
+
+/* ===== TABLE STYLE DASHBOARD ===== */
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.table th{
+    background: #3b82f6;
+    color: rgb(12, 12, 12);
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.table td{
+    padding: 10px 12px;
+    border-bottom: 1px solid #161515;
+    font-size: 14px;
+}
+
+.table tr:hover{
+    background: #f0f7ff;
+}
+
+/* ===== INPUT RECHERCHE ===== */
+.search-input{
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    transition: 0.2s;
+    background: white;
+}
+
+.search-input:focus{
+    border-color: #3b82f6;
+    box-shadow: 0 0 5px rgba(59,130,246,0.3);
+}
+
+/* ===== BOUTONS MODERNES ===== */
+.btn-add,
+.btn-edit,
+.btn-delete,
+.btn-detail{
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+/* Ajouter */
+.btn-add{
+    background: #22c55e;
+    color: white;
+}
+
+.btn-add:hover{
+    background: #16a34a;
+}
+
+/* Modifier */
+.btn-edit{
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-edit:hover{
+    background: #2563eb;
+}
+
+/* Supprimer */
+.btn-delete{
+    background: #ef4444;
+    color: white;
+}
+
+.btn-delete:hover{
+    background: #dc2626;
+}
+
+/* Détail */
+.btn-detail{
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-detail:hover{
+    background: #7c3aed;
+}
+
+/* ===== FORMULAIRE ===== */
+form{
+    margin: 10px 0;
+}
+
+/* ===== TABLE RESPONSIVE ===== */
+@media(max-width: 768px){
+    .table{
+        display: block;
+        overflow-x: auto;
+    }
+}
+/* ===== BACKGROUND PLUS MODERNE ===== */
+body{
+    background: linear-gradient(135deg, #eaf4ff, #d6eaff);
+}
+
+/* ===== CONTAINER ===== */
+.form-container{
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* ===== FORM CARD PREMIUM ===== */
+.form-card{
+    width: 100%;
+    max-width: 750px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px;
+    margin-left: 320px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+    transition: 0.3s;
+}
+
+/* hover subtil */
+.form-card:hover{
+    transform: translateY(-2px);
+}
+
+/* ===== TITLE ===== */
+.form-title{
+    font-size: 22px;
+    font-weight: 600;
+    color: #1f3b57;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ===== SECTIONS ===== */
+.form-section{
+    margin-bottom: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #f8fbff;
+    border: 1px solid #e6eef8;
+}
+
+.form-section h3{
+    margin-bottom: 12px;
+    color: #2563eb;
+    font-size: 16px;
+}
+
+/* ===== INPUTS ===== */
+.form-card input,
+.form-card select,
+.form-card textarea{
+    width: 100%;
+    padding: 11px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #d7e3f3;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+    transition: 0.2s;
+}
+
+/* focus moderne */
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus{
+    border-color: #3b82f6;
+    box-shadow: 0 0 8px rgba(59,130,246,0.25);
+}
+
+/* ===== BOUTON PREMIUM ===== */
+.form-card button{
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.form-card button:hover{
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.3);
+}
+/* ===== LINK RETOUR ===== */
+.back-link{
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.back-link:hover{
+    color: #2563eb;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #eaf4ff, #d6eaff);
+}
+
+/* CARD */
+.login-card{
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+/* TITLE */
+.login-card h2{
+    margin-bottom: 20px;
+    color: #1f3b57;
+}
+
+/* INPUTS DJANGO */
+.login-card input{
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #d7e3f3;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.login-card input:focus{
+    border-color: #3b82f6;
+    box-shadow: 0 0 8px rgba(59,130,246,0.25);
+}
+
+/* BUTTON */
+.login-card button{
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.login-card button:hover{
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.3);
+}
+
+
+/* ===== DETAILS PAGE ONLY ===== */
+
+.details-page{
+    padding: 20px;
+}
+
+/* CLIENT BOX */
+.client-box{
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+}
+
+/* TABLE WRAPPER (LOCAL ONLY) */
+.details-table-wrapper{
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* TABLE UNIQUE (NE TOUCHE PAS LES AUTRES) */
+.details-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* HEAD */
+.details-table th{
+    background: #4976f3;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+/* CELLS */
+.details-table td{
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+/* HOVER */
+.details-table tr:hover{
+    background: #f0f7ff;
+}
+
+/* DATE TAG */
+.date-tag{
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e0ecff;
+    color: #17181b;
+    border-radius: 6px;
+    margin-right: 4px;
+    font-size: 12px;
+}

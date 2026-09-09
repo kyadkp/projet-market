@@ -1,0 +1,21 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<h1>🏪 Cantines</h1>
+
+<form method="GET">
+    <input type="text" name="q" placeholder="Rechercher..." value="{{ query }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<ul>
+    {% for cantine in cantines %}
+        <li>
+            {{ cantine.matricule }} - 
+            {{ cantine.localisation }} - 
+            {{ cantine.client.nom }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% comment %} {% extends 'gestion/base.html' %}
+
+{% block content %}
+<h1>Ajouter un client</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>
+
+<h1>✏️ Modifier Client</h1>
+<h1>✏️ Modifier Client</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form> {% endcomment %}

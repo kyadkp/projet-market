@@ -1,30 +1,35 @@
 from django.db import models
 
-# Client (locataire)
 class Client(models.Model):
     nom = models.CharField(max_length=100)
-    telephone = models.CharField(max_length=20, blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, default='')
+
+    class Meta:
+        unique_together = ['nom', 'telephone']
 
     def __str__(self):
         return self.nom
 
 
-# Cantine (ou stand)
 class Cantine(models.Model):
-    matricule = models.CharField(max_length=50, unique=True)
-    localisation = models.CharField(max_length=100)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    BLOCS = [('A', 'Bloc A'), ('B', 'Bloc B'), ('C', 'Bloc C'), ('D', 'Bloc D')]
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
+    matricule = models.CharField(max_length=100, unique=True)
+    superficie = models.CharField(max_length=50)   # ex: "32 m² + 4 m²"
+    montant_a_payer = models.BigIntegerField(default=0)
+    bloc = models.CharField(max_length=1, choices=BLOCS, default='B')
+    notes = models.TextField(blank=True, default='')   # pour les "AV", "Diakhmpa", etc.
+    est_vacant = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.matricule
+        return f"{self.matricule} - {self.client}"
 
 
-# Paiement (loyer)
 class Paiement(models.Model):
     cantine = models.ForeignKey(Cantine, on_delete=models.CASCADE)
-    montant_a_payer = models.DecimalField(max_digits=10, decimal_places=2)
-    montant_paye = models.DecimalField(max_digits=10, decimal_places=2)
+    montant_paye = models.IntegerField()
     date_paiement = models.DateField()
 
     def __str__(self):
-        return f"{self.cantine} - {self.date_paiement}"
+        return f"{self.cantine} - {self.montant_paye}"
