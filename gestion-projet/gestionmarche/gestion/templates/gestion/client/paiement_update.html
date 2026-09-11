@@ -1,0 +1,49 @@
+{% extends "gestion/base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h4 class="mb-0">Modifier le versement</h4>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <strong>Client :</strong>
+                {{ paiement.cantine.client.nom }}
+            </p>
+
+            <p>
+                <strong>Numéro de cantine :</strong>
+                {{ paiement.cantine.numero_cantine }}
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Enregistrer les modifications
+                    </button>
+
+                    <a
+                        href="{% url 'client_detail' paiement.cantine.client.id %}"
+                        class="btn btn-secondary"
+                    >
+                        Annuler
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

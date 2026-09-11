@@ -9,8 +9,8 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Cantine)
 class CantineAdmin(admin.ModelAdmin):
-    list_display = ['matricule',  'client', 'superficie']
-    search_fields = ['matricule', 'client__nom']
+    list_display = ['numero_cantine',  'client', 'superficie']
+    search_fields = ['numero_cantine', 'client__nom']
     list_filter = ['superficie']
 
 

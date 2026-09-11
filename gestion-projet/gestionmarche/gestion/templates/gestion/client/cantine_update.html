@@ -1,0 +1,37 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form method="post" class="form-card">
+
+        {% csrf_token %}
+
+        <div class="form-title">
+            Modification de la cantine
+        </div>
+
+        <div class="form-section">
+
+            <h3>
+                Cantine {{ cantine.numero_cantine }}
+            </h3>
+
+            {{ form.as_p }}
+
+        </div>
+
+        <button type="submit">
+            Enregistrer les modifications
+        </button>
+
+        <a href="{% url 'client_detail' cantine.client.id %}" class="back-link">
+            ⬅ Retour au client
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

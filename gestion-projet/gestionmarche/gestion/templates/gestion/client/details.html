@@ -4,64 +4,1109 @@
 
 <div class="details-page">
 
-<h1>Détails du client</h1>
+    <!-- ========================= -->
+    <!-- EN-TÊTE DU CLIENT -->
+    <!-- ========================= -->
 
-<div class="client-box">
-    <p><strong>Nom :</strong> {{ client.nom }}</p>
-    <p><strong>Téléphone :</strong> {{ client.telephone }}</p>
-    <p><strong>Nombre de cantines :</strong> {{ cantines|length }}</p>
-</div>
+    <div class="page-header">
 
-<h2>Cantines</h2>
+        <div>
+            <h1>Fiche client</h1>
 
-<div class="details-table-wrapper">
+            <p class="subtitle">
+                Informations et gestion des cantines
+            </p>
+        </div>
 
-<table class="details-table">
+        <a href="{% url 'clients_list' %}" class="btn-back">
+            ← Retour aux clients
+        </a>
 
-    <thead>
-        <tr>
-            <th>Matricule</th>
-            <th>Superficie</th>
-            <th>Montant à payer</th>
-            <th>Montant payé</th>
-            <th>Reste</th>
-            <th>Date paiement</th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
+
+    <!-- ========================= -->
+    <!-- INFORMATIONS CLIENT -->
+    <!-- ========================= -->
+
+    <div class="client-card">
+
+        <div class="client-info">
+
+            <div class="info-item">
+                <span class="info-label">Nom</span>
+                <strong>{{ client.nom }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Téléphone</span>
+
+                <strong>
+                    {% if client.telephone %}
+                        {{ client.telephone }}
+                    {% else %}
+                        Non renseigné
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Nombre de cantines</span>
+                <strong>{{ cantines|length }}</strong>
+            </div>
+
+        </div>
+
+
+        <a href="{% url 'client_update' client.id %}"
+           class="btn-client-edit">
+            Modifier le client
+        </a>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- TITRE DES CANTINES -->
+    <!-- ========================= -->
+
+    <div class="section-title">
+
+        <div>
+            <h2>Cantines du client</h2>
+
+            <p>
+                Gérez les informations et les versements de chaque cantine.
+            </p>
+        </div>
+
+
+        <div class="cantine-section-actions">
+
+            <span class="cantine-count">
+                {{ cantines|length }}
+                cantine{{ cantines|length|pluralize }}
+            </span>
+
+            <a href="{% url 'cantine_create_for_client' client.id %}"
+               class="btn-add-cantine">
+                + Ajouter une cantine
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- LISTE DES CANTINES -->
+    <!-- ========================= -->
+
+    <div class="cantines-container">
+
         {% for cantine in cantines %}
-        <tr>
 
-            <td>{{ cantine.matricule }}</td>
-            <td>{{ cantine.superficie }}</td>
+        <div class="cantine-card">
 
-            <td>{{ cantine.total_du }}</td>
-            <td>{{ cantine.total_paye }}</td>
-            <td>{{ cantine.restant }}</td>
 
-            <td>
-                {% for p in cantine.paiement_set.all %}
-                    <span class="date-tag">
-                        {{ p.date_paiement|date:"d/m/Y" }}
+            <!-- ========================= -->
+            <!-- EN-TÊTE CANTINE -->
+            <!-- ========================= -->
+
+            <div class="cantine-header">
+
+                <div class="cantine-title">
+
+                    <div class="cantine-number">
+                        {{ cantine.numero_cantine }}
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Cantine {{ cantine.numero_cantine }}
+                        </h3>
+
+                        <p>
+                            {{ cantine.get_bloc_display }}
+                            ·
+                            {{ cantine.superficie }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- INFORMATIONS FINANCIÈRES -->
+            <!-- ========================= -->
+
+            <div class="financial-summary">
+
+
+                <div class="financial-item">
+
+                    <span>
+                        Prix total de la cantine
                     </span>
-                {% empty %}
-                    Aucun paiement
-                {% endfor %}
-            </td>
 
-        </tr>
+                    <strong>
+                        {{ cantine.total_du }} FCFA
+                    </strong>
+
+                </div>
+
+
+                <div class="financial-item paid">
+
+                    <span>
+                        Total versé
+                    </span>
+
+                    <strong>
+                        {{ cantine.total_paye }} FCFA
+                    </strong>
+
+                </div>
+
+
+                <div class="financial-item remaining">
+
+                    <span>
+                        Reste à payer
+                    </span>
+
+                    <strong>
+                        {{ cantine.restant }} FCFA
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- ACTIONS -->
+            <!-- ========================= -->
+
+            <div class="cantine-actions">
+
+                <a href="{% url 'cantine_update' cantine.id %}"
+                   class="btn-edit-cantine">
+                    Modifier la cantine
+                </a>
+
+
+                <a href="{% url 'paiement_add' cantine.id %}"
+                   class="btn-payment">
+                    + Ajouter un versement
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- HISTORIQUE DES VERSEMENTS -->
+            <!-- ========================= -->
+
+            <details class="payment-history">
+
+                <summary>
+
+                    <span class="history-title">
+                        Historique des versements
+                    </span>
+
+                    <span class="payment-count">
+
+                        {{ cantine.paiement_set.all|length }}
+
+                        versement{{ cantine.paiement_set.all|length|pluralize }}
+
+                    </span>
+
+                </summary>
+
+
+                <div class="payment-content">
+
+                    {% for paiement in cantine.paiement_set.all %}
+
+                    {% if forloop.first %}
+
+                    <div class="table-wrapper">
+
+                        <table class="payment-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Montant</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                    {% endif %}
+
+
+                                <tr>
+    <td>
+        {{ forloop.counter }}
+    </td>
+
+    <td class="payment-amount">
+        {{ paiement.montant_paye }} FCFA
+    </td>
+
+    <td>
+        {% if paiement.date_paiement %}
+            {{ paiement.date_paiement|date:"d/m/Y" }}
+        {% else %}
+            Date inconnue
+        {% endif %}
+    </td>
+
+    <td>
+        {% if paiement.heure_inconnue %}
+            Heure inconnue
+        {% elif paiement.date_paiement %}
+            {{ paiement.date_paiement|date:"H:i:s" }}
+        {% else %}
+            Heure inconnue
+        {% endif %}
+    </td>
+
+    <td>
+    <div class="payment-actions">
+
+        <a
+            href="{% url 'paiement_update' paiement.id %}"
+            class="payment-action edit"
+            title="Modifier le versement"
+        >
+            ✏️
+        </a>
+
+        <a
+            href="{% url 'paiement_delete' paiement.id %}"
+            class="payment-action delete"
+            title="Supprimer le versement"
+        >
+            🗑️
+        </a>
+
+    </div>
+</td>
+</tr>
+
+                    {% if forloop.last %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    {% endif %}
+
+                    {% empty %}
+
+                    <div class="no-payment">
+
+                        <div class="no-payment-icon">
+                            💰
+                        </div>
+
+                        <strong>
+                            Aucun versement enregistré
+                        </strong>
+
+                        <p>
+                            Aucun paiement n'a encore été enregistré
+                            pour cette cantine.
+                        </p>
+
+                        <a href="{% url 'paiement_add' cantine.id %}"
+                           class="btn-first-payment">
+                            + Ajouter le premier versement
+                        </a>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </details>
+
+
+            <!-- ========================= -->
+            <!-- NOTES -->
+            <!-- ========================= -->
+
+            {% if cantine.notes %}
+
+            <div class="cantine-notes">
+
+                <strong>
+                    Notes
+                </strong>
+
+                <p>
+                    {{ cantine.notes }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
         {% empty %}
-        <tr>
-            <td colspan="6">Aucune cantine</td>
-        </tr>
+
+
+        <!-- ========================= -->
+        <!-- AUCUNE CANTINE -->
+        <!-- ========================= -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🏪
+            </div>
+
+            <h3>
+                Aucune cantine
+            </h3>
+
+            <p>
+                Ce client ne possède actuellement aucune cantine enregistrée.
+            </p>
+
+            <a href="{% url 'cantine_create_for_client' client.id %}"
+               class="btn-add-cantine">
+                + Ajouter une cantine
+            </a>
+
+        </div>
+
+
         {% endfor %}
-    </tbody>
 
-</table>
-
-</div>
+    </div>
 
 </div>
+
+
+<!-- ===================================================== -->
+<!-- STYLE -->
+<!-- ===================================================== -->
+
+<style>
+
+/* ========================= */
+/* PAGE */
+/* ========================= */
+
+.details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+
+/* ========================= */
+/* EN-TÊTE */
+/* ========================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    margin: 0;
+
+    color: #1f3b5b;
+
+    font-size: 32px;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+
+    color: #777;
+}
+
+.btn-back {
+    text-decoration: none;
+
+    background: #6c757d;
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+}
+
+
+/* ========================= */
+/* INFORMATIONS CLIENT */
+/* ========================= */
+
+.client-card {
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    margin-bottom: 35px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.client-info {
+    display: flex;
+
+    gap: 55px;
+
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.info-label {
+    font-size: 13px;
+
+    color: #777;
+}
+
+.info-item strong {
+    font-size: 17px;
+
+    color: #222;
+}
+
+.btn-client-edit {
+    background: #3498db;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 16px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* ========================= */
+/* TITRE CANTINES */
+/* ========================= */
+
+.section-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    color: #1f3b5b;
+}
+
+.section-title p {
+    margin: 5px 0 0;
+
+    color: #777;
+}
+
+.cantine-section-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.payment-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.payment-action {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.payment-action.edit {
+    background: #eef4ff;
+    color: #2563eb;
+}
+
+.payment-action.delete {
+    background: #fff1f2;
+    color: #dc2626;
+}
+
+.payment-action:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.payment-action.edit:hover {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.payment-action.delete:hover {
+    background: #ffe4e6;
+    color: #b91c1c;
+}
+
+.cantine-count {
+    background: #e9f2ff;
+
+    color: #2878c8;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.btn-add-cantine {
+    background: #2ecc71;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 9px 14px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    display: inline-block;
+}
+
+.btn-add-cantine:hover {
+    background: #27ae60;
+}
+
+
+/* ========================= */
+/* CARTE CANTINE */
+/* ========================= */
+
+.cantine-card {
+    background: white;
+
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+
+    overflow: hidden;
+
+    border: 1px solid #e8e8e8;
+}
+
+
+/* ========================= */
+/* EN-TÊTE CANTINE */
+/* ========================= */
+
+.cantine-header {
+    padding: 20px 22px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #eee;
+}
+
+.cantine-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.cantine-number {
+    background: #1f3b5b;
+
+    color: white;
+
+    min-width: 60px;
+
+    height: 52px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+
+    font-size: 14px;
+}
+
+.cantine-title h3 {
+    margin: 0;
+
+    color: #222;
+}
+
+.cantine-title p {
+    margin: 5px 0 0;
+
+    color: #777;
+}
+
+
+/* ========================= */
+/* FINANCES */
+/* ========================= */
+
+.financial-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    padding: 20px 22px;
+}
+
+.financial-item {
+    background: #f7f8fa;
+
+    border-radius: 9px;
+
+    padding: 15px;
+}
+
+.financial-item span {
+    display: block;
+
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 6px;
+}
+
+.financial-item strong {
+    font-size: 18px;
+
+    color: #222;
+}
+
+.financial-item.paid strong {
+    color: #239b56;
+}
+
+.financial-item.remaining strong {
+    color: #e67e22;
+}
+
+
+/* ========================= */
+/* ACTIONS */
+/* ========================= */
+
+.cantine-actions {
+    padding: 0 22px 20px;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.cantine-actions a {
+    text-decoration: none;
+
+    padding: 9px 14px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+
+    font-size: 14px;
+}
+
+.btn-edit-cantine {
+    background: #3498db;
+
+    color: white;
+}
+
+.btn-payment {
+    background: #2ecc71;
+
+    color: white;
+}
+
+.btn-edit-cantine:hover {
+    background: #2980b9;
+}
+
+.btn-payment:hover {
+    background: #27ae60;
+}
+
+
+/* ========================= */
+/* HISTORIQUE */
+/* ========================= */
+
+.payment-history {
+    border-top: 1px solid #eee;
+}
+
+.payment-history summary {
+    cursor: pointer;
+
+    padding: 16px 22px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-weight: 600;
+
+    color: #34495e;
+
+    list-style: none;
+}
+
+.payment-history summary::-webkit-details-marker {
+    display: none;
+}
+
+.payment-history summary::before {
+    content: "▶";
+
+    font-size: 11px;
+
+    margin-right: 10px;
+
+    transition: transform 0.2s;
+}
+
+.payment-history[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.history-title {
+    flex: 1;
+}
+
+.payment-count {
+    background: #f0f0f0;
+
+    color: #666;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+.payment-content {
+    padding: 0 22px 20px;
+}
+
+
+/* ========================= */
+/* TABLE VERSEMENTS */
+/* ========================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.payment-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.payment-table th {
+    background: #f5f6f8;
+
+    color: #555;
+
+    font-size: 13px;
+
+    text-align: left;
+
+    padding: 11px;
+}
+
+.payment-table td {
+    border-top: 1px solid #eee;
+
+    padding: 11px;
+
+    color: #444;
+}
+
+.payment-table tr:hover {
+    background: #fafafa;
+}
+
+.payment-amount {
+    font-weight: 700;
+
+    color: #239b56 !important;
+}
+
+
+/* ========================= */
+/* AUCUN VERSEMENT */
+/* ========================= */
+
+.no-payment {
+    padding: 25px;
+
+    text-align: center;
+
+    background: #fafafa;
+
+    border-radius: 8px;
+
+    color: #666;
+}
+
+.no-payment-icon {
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+.no-payment p {
+    margin: 6px 0 15px;
+
+    color: #888;
+
+    font-size: 14px;
+}
+
+.btn-first-payment {
+    display: inline-block;
+
+    background: #2ecc71;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 8px 13px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+
+    font-size: 13px;
+}
+
+
+/* ========================= */
+/* NOTES */
+/* ========================= */
+
+.cantine-notes {
+    margin: 0 22px 20px;
+
+    padding: 13px 15px;
+
+    background: #fff9e6;
+
+    border-left: 4px solid #f1c40f;
+
+    border-radius: 5px;
+}
+
+.cantine-notes strong {
+    color: #8a6d00;
+}
+
+.cantine-notes p {
+    margin: 5px 0 0;
+
+    color: #665800;
+}
+
+
+/* ========================= */
+/* ÉTAT VIDE */
+/* ========================= */
+
+.empty-state {
+    background: white;
+
+    padding: 50px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    color: #777;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.empty-icon {
+    font-size: 40px;
+
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    color: #444;
+
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+}
+
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+
+    .client-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .client-info {
+        gap: 20px;
+    }
+
+
+    .section-title {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .cantine-section-actions {
+        width: 100%;
+
+        flex-wrap: wrap;
+    }
+
+
+    .financial-summary {
+        grid-template-columns: 1fr;
+    }
+
+
+    .cantine-actions {
+        flex-direction: column;
+    }
+
+
+    .cantine-actions a {
+        text-align: center;
+    }
+
+
+    .cantine-header {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
 
 {% endblock %}

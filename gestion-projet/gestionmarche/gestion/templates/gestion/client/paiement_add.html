@@ -1,0 +1,52 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <form method="post" class="form-card">
+
+        {% csrf_token %}
+
+        <div class="form-title">
+            Ajouter un versement
+        </div>
+
+        <div class="form-section">
+
+            <h3>
+                Cantine {{ cantine.numero_cantine }}
+            </h3>
+
+            <p>
+                <strong>Client :</strong>
+                {{ cantine.client.nom }}
+            </p>
+
+            <p>
+                <strong>Montant à payer :</strong>
+                {{ cantine.montant_a_payer }} FCFA
+            </p>
+
+            {{ form.as_p }}
+
+            <small>
+                La date et l'heure du versement seront enregistrées
+                automatiquement.
+            </small>
+
+        </div>
+
+        <button type="submit">
+            Enregistrer le versement
+        </button>
+
+        <a href="{% url 'client_detail' cantine.client.id %}" class="back-link">
+            ⬅ Retour au client
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
