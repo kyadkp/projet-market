@@ -22,6 +22,18 @@ import django
 django.setup()
 
 
+# Appliquer automatiquement les migrations au démarrage
+# afin que la base de données soit toujours compatible
+# avec la version actuelle de l'application.
+from django.core.management import call_command
+
+call_command(
+    "migrate",
+    interactive=False,
+    verbosity=0
+)
+
+
 from gestionmarche.wsgi import application
 
 
@@ -31,7 +43,11 @@ def ouvrir_navigateur():
 
 print("Gestion du Marché démarre...")
 
-threading.Timer(3, ouvrir_navigateur).start()
+
+threading.Timer(
+    3,
+    ouvrir_navigateur
+).start()
 
 
 serve(
